@@ -8,9 +8,9 @@ on:
       logLevel:
         description: 'Manual release'     
         required: true
-        default: 'warning'
+        default: 'Manual release'
       tags:
-        description: 'Manual release' 
+        description: 'Tag release' 
 jobs:
   weekly-merge:
 
@@ -25,8 +25,8 @@ jobs:
     - name: Nightly Merge
       uses: robotology/gh-action-nightly-merge@v1.3.1
       with:
-        stable_branch: 'production'
-        development_branch: 'master'
+        stable_branch: 'master'
+        development_branch: 'production'
         allow_ff: false
         user_name: 'Release Action'
       env:
