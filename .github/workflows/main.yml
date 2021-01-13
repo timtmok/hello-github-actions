@@ -28,5 +28,6 @@ jobs:
         stable_branch: 'production'
         development_branch: 'master'
         allow_ff: false
+        user_name: 'Release Action'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
