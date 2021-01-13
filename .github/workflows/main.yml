@@ -13,21 +13,14 @@ on:
         description: 'Tag release' 
 jobs:
   weekly-merge:
-
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Tag
-      uses: mydea/action-tag-date-version@v20
-
-    - name: Nightly Merge
-      uses: robotology/gh-action-nightly-merge@v1.3.2
+    - name: Merge master -> production
+      uses: devmasx/merge-branch@v1.3.1
       with:
-        stable_branch: 'master'
-        development_branch: 'production'
-        allow_ff: false
-        user_name: 'Release Action'
+        type: now
+        from_branch: master
+        target_branch: production
+
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
