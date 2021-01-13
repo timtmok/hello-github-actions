@@ -1,11 +1,25 @@
-name: A workflow for my Hello World file
-on: push
+name: 'Weekly Release'
+
+on:
+  schedule:
+    - cron:  '0 8 * * 1'
+
 jobs:
-  build:
-    name: Hello world action
+  weekly-merge:
+
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - uses: ./action-a
-        with:
-          MY_NAME: "Tim"
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Tag
+      uses: mydea/action-tag-date-version@v20
+
+    - name: Nightly Merge
+      uses: robotology/gh-action-nightly-merge@v1.3.1
+      with:
+        stable_branch: 'production'
+        development_branch: 'master'
+        allow_ff: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
