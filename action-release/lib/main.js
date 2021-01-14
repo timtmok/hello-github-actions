@@ -13,23 +13,26 @@ const { context } = require('@actions/github/lib/utils');
 function run() {
   return __awaiter(this, void 0, void 0, function* () {
     const octokit = github.getOctokit(core.getInput('github_token'))
-    const release = octokit.repos.createRelease({
+
+    octokit.repos.createRelease({
       owner: context.repo.owner,
       repo: context.repo.repo,
       tag_name: core.getInput('tag_name'),
-    })
-
-    octokit.request('GET /repos/{owner}/{repo}/git/ref/{ref}', {
-      owner: context.repo.owner,
-      repo: context.repo.repo,
-      ref: `tags/${core.getInput('tag_name')}`,
-    }).then((tag) => {
-      octokit.git.updateRef({
+    }).then((release) => {
+      console.error(release)
+      octokit.request('GET /repos/{owner}/{repo}/git/ref/{ref}', {
         owner: context.repo.owner,
         repo: context.repo.repo,
-        ref: "production",
-        sha: tag['data']['object']['sha'],
-        force: true,
+        ref: `tags/${core.getInput('tag_name')}`,
+      }).then((tag) => {
+
+        octokit.git.updateRef({
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+          ref: "production",
+          sha: tag['data']['object']['sha'],
+          force: true,
+        })
       })
     })
   });
