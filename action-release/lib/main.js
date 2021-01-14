@@ -29,7 +29,7 @@ function run() {
       owner: context.repo.owner,
       repo: context.repo.repo,
       ref: "production",
-      sha: tag.object['sha'],
+      sha: tag['object']['sha'],
       force: true,
     })
   });
