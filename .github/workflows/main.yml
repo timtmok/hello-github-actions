@@ -8,18 +8,16 @@ jobs:
   weekly-merge:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: master
       - name: Get current date for tag
         id: date
         run: echo "TAG_DATE=$(date +'%Y.%m.%d.%H%M%S')" >> $GITHUB_ENV
-      - uses: actions/checkout@v2
-      - name: Tag Release
-        uses: mathieudutour/github-tag-action@v5.1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          release_branches: master
-          custom_tag: ${{ env.TAG_DATE }}
-      - name: Push to Production
+      - name: Tag & Push to Production
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git push --force origin origin/master:v${{ env.TAG_DATE }}
+          git tag ${{ env.TAG_DATE }}
+          git push --follow-tags
+          git push --force origin origin/production:${{ env.TAG_DATE }}
