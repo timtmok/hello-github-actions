@@ -13,10 +13,19 @@ const { context } = require('@actions/github/lib/utils');
 function run() {
   return __awaiter(this, void 0, void 0, function* () {
     const octokit = github.getOctokit(core.getInput('github_token'))
-    octokit.repos.createRelease({
+    const release = await octokit.repos.createRelease({
       owner: context.repo.owner,
       repo: context.repo.repo,
       tag_name: core.getInput('tag_name'),
+    })
+
+    console.log(release.id)
+    octokit.git.updateRef({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      ref: "production",
+      sha: core.getInput('tag_name'),
+      force: true
     })
   });
 }
