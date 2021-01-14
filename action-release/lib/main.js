@@ -19,7 +19,6 @@ function run() {
       repo: context.repo.repo,
       tag_name: core.getInput('tag_name'),
     }).then((release) => {
-      console.error(release)
       octokit.request('GET /repos/{owner}/{repo}/git/ref/{ref}', {
         owner: context.repo.owner,
         repo: context.repo.repo,
@@ -29,7 +28,7 @@ function run() {
         octokit.git.updateRef({
           owner: context.repo.owner,
           repo: context.repo.repo,
-          ref: "production",
+          ref: "heads/production",
           sha: tag['data']['object']['sha'],
           force: true,
         })
