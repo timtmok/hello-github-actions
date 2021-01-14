@@ -19,7 +19,7 @@ function run() {
       tag_name: core.getInput('tag_name'),
     })
 
-    octokit.git.getRef({
+    core.request('GET /repos/{owner}/{repo}/git/ref/{ref}', {
       owner: context.repo.owner,
       repo: context.repo.repo,
       ref: `tags/${core.getInput('tag_name')}`,
