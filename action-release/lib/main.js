@@ -25,6 +25,8 @@ function run() {
       ref: `tags/${core.getInput('tag_name')}`,
     })
 
+    console.error(tag)
+
     octokit.git.updateRef({
       owner: context.repo.owner,
       repo: context.repo.repo,
