@@ -14,10 +14,11 @@ jobs:
       - name: Get current date for tag
         id: date
         run: echo "TAG_DATE=$(date +'%Y.%m.%d.%H%M%S')" >> $GITHUB_ENV
-      - name: Tag & Push to Production
+      - name: Tag Release
+        uses: ChloePlanet/github-tag-action@2.0.3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CUSTOM_TAG: ${{ env.TAG_DATE }}
+      - name: Push to Production
         run: |
-          git tag -a ${{ env.TAG_DATE }} -m "release ${{ env.TAG_DATE }}"
-          git push --follow-tags
           git push --force origin ${{ env.TAG_DATE }}:production
