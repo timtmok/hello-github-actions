@@ -19,17 +19,17 @@ function run() {
       tag_name: core.getInput('tag_name'),
     })
 
-    const tag = octokit.git.getTag({
+    const tag = octokit.git.getRef({
       owner: context.repo.owner,
       repo: context.repo.repo,
-      tag_sha: core.getInput('tag_name'),
+      ref: `tags/${core.getInput('tag_name')}`,
     })
 
     octokit.git.updateRef({
       owner: context.repo.owner,
       repo: context.repo.repo,
       ref: "production",
-      sha: tag.sha,
+      sha: tag.object.sha,
       force: true,
     })
   });
