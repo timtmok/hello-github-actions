@@ -31,8 +31,6 @@ function run() {
         sha: tag['data']['object']['sha'],
         force: true,
       })
-    }).catch((err) => {
-      console.log(err)
     })
   });
 }
