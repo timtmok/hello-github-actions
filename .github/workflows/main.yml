@@ -24,5 +24,4 @@ jobs:
           https://api.github.com/repos/${{ github.repository }}/releases \
           -d '{"tag_name":"${{ env.TAG_DATE }}"}'
 
-          git push --follow-tags
           git push --force origin ${{ env.TAG_DATE }}:production
