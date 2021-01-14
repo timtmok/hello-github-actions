@@ -4,23 +4,16 @@ on:
   schedule:
     - cron:  '0 8 * * 1'
   workflow_dispatch:
-    inputs:
-      logLevel:
-        description: 'Level'     
-        required: true
-        default: 'warning'
-      tags:
-        description: 'Tag release' 
 jobs:
   weekly-merge:
     runs-on: ubuntu-latest
     steps:
-    - name: Merge master -> production
-      uses: devmasx/merge-branch@v1.3.1
-      with:
-        type: now
-        from_branch: master
-        target_branch: production
-
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get current date for tag
+        id: date
+        run: echo "TAG_DATE=$(date +'%Y.%m.%d.%H%M%S')" >> $GITHUB_ENV
+      - name: Tag & Release master -> production
+        uses: mathieudutour/github-tag-action@v5.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_branches: master
+          custom_tag: ${{ env.TAG_DATE }}
