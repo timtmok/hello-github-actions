@@ -14,14 +14,8 @@ jobs:
       - name: Get current date for tag
         id: date
         run: echo "TAG_DATE=$(date +'%Y.%m.%d.%H%M%S')" >> $GITHUB_ENV
-      - name: Tag & Push to Production
-        run: |
-          curl \
-          -X POST \
-          -H 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-          -H 'content-type: application/json' \
-          -H "Accept: application/vnd.github.v3+json" \
-          https://api.github.com/repos/${{ github.repository }}/releases \
-          -d '{"tag_name":"${{ env.TAG_DATE }}"}'
-
-          git push --force origin ${{ env.TAG_DATE }}:production
+      - uses: ./action-release
+        name: Tag & Push to Production
+        with:
+          tag_name: ${{ env.TAG_DATE }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
