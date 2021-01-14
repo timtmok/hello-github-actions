@@ -28,9 +28,11 @@ function run() {
         owner: context.repo.owner,
         repo: context.repo.repo,
         ref: "production",
-        sha: tag['object']['sha'],
+        sha: tag['data']['object']['sha'],
         force: true,
       })
+    }).catch((err) => {
+      console.log(err)
     })
   });
 }
