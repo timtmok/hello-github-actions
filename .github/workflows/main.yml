@@ -1,4 +1,4 @@
-name: 'Weekly Release'
+name: 'Release'
 
 on:
   push:
@@ -9,14 +9,8 @@ jobs:
   weekly-merge:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: master
-      - name: Get current date for tag
-        id: date
-        run: echo "TAG_DATE=$(date +'%Y.%m.%d.%H%M%S')" >> $GITHUB_ENV
-      - uses: ./action-release
+      - uses: untappd/utc-release-action@2021.01.15.191524
         name: Tag & Push to Production
         with:
-          tag_name: ${{ env.TAG_DATE }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+
